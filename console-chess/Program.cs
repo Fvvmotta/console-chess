@@ -10,15 +10,21 @@ namespace console_chess
         {
             try
             {
-                Board board = new Board(8, 8);
+                ChessMatch match = new ChessMatch();
+                while (!match.Terminated)
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(match.Board);
 
-                board.setPiece(new Tower(board, Color.Black), new Position(0, 0));
-                board.setPiece(new Tower(board, Color.Black), new Position(1, 3));
-                board.setPiece(new King(board, Color.Black), new Position(0, 2));
+                    Console.WriteLine();
+                    Console.Write("Origin: ");
+                    Position origin = Screen.ReadChessPosition().ToPosition();
+                    Console.Write("Destiny: ");
+                    Position destiny = Screen.ReadChessPosition().ToPosition();
 
-                board.setPiece(new Tower(board, Color.White), new Position(3, 4));
-
-                Screen.printBoard(board);
+                    match.ExecuteMovement(origin, destiny);
+                }
+                Screen.PrintBoard(match.Board); 
             }catch (BoardException e)
             {
                 Console.WriteLine(e.Message);

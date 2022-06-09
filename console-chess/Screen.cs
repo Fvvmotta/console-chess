@@ -1,11 +1,12 @@
 ﻿using System;
 using board;
+using chess;
 
 namespace console_chess
 {
     internal class Screen
     {
-        public static void printBoard(Board board)
+        public static void PrintBoard(Board board)
         {
             for (int i = 0; i < board.Lines; i++)
             {
@@ -18,7 +19,7 @@ namespace console_chess
                     }
                     else
                     {
-                        printPiece(board.Piece(i, j));
+                        PrintPiece(board.Piece(i, j));
                         Console.Write(" ");
                     }
                 }
@@ -27,7 +28,15 @@ namespace console_chess
             Console.WriteLine("  a b c d e f g h");
         }
 
-        public static void printPiece(Piece piece)
+        public static ChessPosition ReadChessPosition()
+        {
+            string s = Console.ReadLine();
+            char column = s[0];
+            int line = int.Parse(s[1] + "");
+            return new ChessPosition(column, line);
+        }
+
+        public static void PrintPiece(Piece piece)
         {
             if(piece.Color == Color.White)
             {

@@ -28,15 +28,15 @@ namespace board
         {
             return Pieces[pos.Lines, pos.Columns];
         }
-        public bool pieceExist(Position pos)
+        public bool PieceExist(Position pos)
         {
-            validatePosition(pos);
+            ValidatePosition(pos);
             return Piece(pos) != null;
         }
 
-        public void setPiece(Piece p, Position pos)
+        public void SetPiece(Piece p, Position pos)
         {
-            if (pieceExist(pos))
+            if (PieceExist(pos))
             {
                 throw new BoardException("A piece already exists in this position");
             }
@@ -44,7 +44,19 @@ namespace board
             p.Position = pos;
         }
 
-        public bool validPosition(Position pos)
+        public Piece RemovePiece(Position pos)
+        {
+            if(Piece(pos) == null)
+            {
+                return null;
+            }
+            Piece aux = Piece(pos);
+            aux.Position = null;
+            Pieces[pos.Lines, pos.Columns] = null;
+            return aux;
+        }
+
+        public bool ValidPosition(Position pos)
         {
             if(pos.Lines < 0 || pos.Columns >= Lines || pos.Columns < 0 || pos.Columns >= Columns)
             {
@@ -53,9 +65,9 @@ namespace board
             return true;
         }
 
-        public void validatePosition(Position pos)
+        public void ValidatePosition(Position pos)
         {
-            if (!validPosition(pos))
+            if (!ValidPosition(pos))
             {
                 throw new BoardException("Invalid Position!");
             }

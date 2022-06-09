@@ -8,20 +8,11 @@ namespace console_chess
     {
         static void Main(string[] args)
         {
-            try
-            {
-                Board board = new Board(8, 8);
+            ChessPosition pos = new ChessPosition('c', 7);
+            Console.WriteLine(pos);
 
-                board.setPiece(new Tower(board, Color.Black), new Position(0, 0));
-                board.setPiece(new Tower(board, Color.Black), new Position(1, 9));
-                board.setPiece(new King(board, Color.Black), new Position(0, 2));
+            Console.WriteLine(pos.toPosition());
 
-                Screen.printBoard(board);
-            }catch (BoardException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            
             Console.ReadLine();
         }
     }

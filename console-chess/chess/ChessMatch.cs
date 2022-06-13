@@ -13,7 +13,7 @@ namespace chess
 
         public ChessMatch()
         {
-            Board = new Board(8, 8);
+            Board = new Board(8 , 8);
             Turn = 1;
             CurrentPlayer = Color.White;
             Terminated = false;

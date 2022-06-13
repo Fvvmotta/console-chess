@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace board
+﻿namespace board
 {
     internal class Board
     {
@@ -26,7 +20,7 @@ namespace board
 
         public Piece Piece(Position pos)
         {
-            return Pieces[pos.Lines, pos.Columns];
+            return Pieces[pos.Line, pos.Column];
         }
         public bool PieceExist(Position pos)
         {
@@ -40,7 +34,7 @@ namespace board
             {
                 throw new BoardException("A piece already exists in this position");
             }
-            Pieces[pos.Lines, pos.Columns] = p;
+            Pieces[pos.Line, pos.Column] = p;
             p.Position = pos;
         }
 
@@ -52,13 +46,13 @@ namespace board
             }
             Piece aux = Piece(pos);
             aux.Position = null;
-            Pieces[pos.Lines, pos.Columns] = null;
+            Pieces[pos.Line, pos.Column] = null;
             return aux;
         }
 
         public bool ValidPosition(Position pos)
         {
-            if(pos.Lines < 0 || pos.Columns >= Lines || pos.Columns < 0 || pos.Columns >= Columns)
+            if(pos.Line < 0 || pos.Line >= Lines || pos.Column < 0 || pos.Column >= Columns)
             {
                 return false;
             }

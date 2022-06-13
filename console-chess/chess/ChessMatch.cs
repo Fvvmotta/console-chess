@@ -7,8 +7,8 @@ namespace chess
     internal class ChessMatch
     {
         public Board Board { get; private set; }
-        private int Turn;
-        private Color CurrentPlayer;
+        public int Turn { get; private set; }
+        public Color CurrentPlayer { get; private set; }
         public bool Terminated { get; private set; }
 
         public ChessMatch()
@@ -27,6 +27,47 @@ namespace chess
             Piece capturedPiece = Board.RemovePiece(destiny);
             Board.SetPiece(p, destiny);
 
+        }
+        public void makePlay(Position origin, Position destiny)
+        {
+            ExecuteMovement(origin, destiny);
+            Turn++;
+            ChangePlayer();
+        }
+
+        public void ValideOriginPosition(Position pos)
+        {
+            if(Board.Piece(pos) == null)
+            {
+                throw new BoardException("Theres no piece to be selected on the origin position!");
+            }
+            if(CurrentPlayer != Board.Piece(pos).Color)
+            {
+                throw new BoardException("This chess piece is not your color!");
+            }
+            if (!Board.Piece(pos).ExistsPossibleMovements())
+            {
+                throw new BoardException("Theres no possible movements for this piece!");
+            }
+        }
+
+        public void ValidateDestinyPosition(Position origin, Position destiny)
+        {
+            if (!Board.Piece(origin).CanMoveTo(destiny))
+            {
+                throw new BoardException("Invalid destiny position!");
+            }
+        }
+        public void ChangePlayer()
+        {
+            if(CurrentPlayer == Color.White)
+            {
+                CurrentPlayer = Color.Black;
+            }
+            else
+            {
+                CurrentPlayer = Color.White;
+            }
         }
         private void InsertPieces()
         {

@@ -1,16 +1,15 @@
-﻿using System;
-using board;
-
+﻿using board;
 namespace chess
 {
-    internal class Tower : Piece
+    internal class Bishop : Piece
     {
-        public Tower(Board board, Color color) : base(board, color)
+        public Bishop (Board board, Color color) : base(board, color)
         {
         }
+
         public override string ToString()
         {
-            return "T";
+            return "B";
         }
 
         private bool CanMove(Position pos)
@@ -25,20 +24,8 @@ namespace chess
 
             Position pos = new Position(0, 0);
 
-            //north
-            pos.DefineValues(Position.Line - 1, Position.Column);
-            while(Board.ValidPosition(pos) && CanMove(pos))
-            {
-                mat[pos.Line, pos.Column] = true;
-                if(Board.Piece(pos) != null && Board.Piece(pos).Color != Color)
-                {
-                    break;
-                }
-                pos.Line = pos.Line - 1;
-            }
-
-            //south
-            pos.DefineValues(Position.Line + 1, Position.Column);
+            // NO
+            pos.DefineValues(Position.Line - 1, Position.Column - 1);
             while (Board.ValidPosition(pos) && CanMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
@@ -46,11 +33,11 @@ namespace chess
                 {
                     break;
                 }
-                pos.Line = pos.Line + 1;
+                pos.DefineValues(pos.Line - 1, pos.Column - 1);
             }
 
-            //east
-            pos.DefineValues(Position.Line, Position.Column + 1);
+            // NE
+            pos.DefineValues(Position.Line - 1, Position.Column + 1);
             while (Board.ValidPosition(pos) && CanMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
@@ -58,11 +45,11 @@ namespace chess
                 {
                     break;
                 }
-                pos.Column = pos.Column + 1;
+                pos.DefineValues(pos.Line - 1, pos.Column + 1);
             }
 
-            //west
-            pos.DefineValues(Position.Line, Position.Column - 1);
+            // SE
+            pos.DefineValues(Position.Line + 1, Position.Column + 1);
             while (Board.ValidPosition(pos) && CanMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
@@ -70,7 +57,19 @@ namespace chess
                 {
                     break;
                 }
-                pos.Column = pos.Column - 1;
+                pos.DefineValues(pos.Line + 1, pos.Column + 1);
+            }
+
+            // SO
+            pos.DefineValues(Position.Line + 1, Position.Column - 1);
+            while (Board.ValidPosition(pos) && CanMove(pos))
+            {
+                mat[pos.Line, pos.Column] = true;
+                if (Board.Piece(pos) != null && Board.Piece(pos).Color != Color)
+                {
+                    break;
+                }
+                pos.DefineValues(pos.Line + 1, pos.Column - 1);
             }
             return mat;
         }

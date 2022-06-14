@@ -1,11 +1,9 @@
-﻿using System;
-using board;
-
+﻿using board;
 namespace chess
 {
     internal class King : Piece
     {
-        public King(Board board, Color color) : base(board, color)
+        public King(Board board, Color color, ChessMatch match) : base(board, color)
         {
         }
         public override string ToString()

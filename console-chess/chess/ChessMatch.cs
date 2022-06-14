@@ -37,6 +37,27 @@ namespace chess
             {
                 Captured.Add(capturedPiece);
             }
+
+            //#especialplay small castling
+            if(p is King && destiny.Column == origin.Column + 2)
+            {
+                Position originR = new Position(origin.Line, origin.Column + 3);
+                Position destinyR = new Position(origin.Line, origin.Column + 1);
+                Piece R = Board.RemovePiece(originR);
+                R.IncrementMovementQuantity();
+                Board.SetPiece(R, destinyR);
+            }
+
+            //#especialplay big castling
+            if (p is King && destiny.Column == origin.Column - 2)
+            {
+                Position originR = new Position(origin.Line, origin.Column - 4);
+                Position destinyR = new Position(origin.Line, origin.Column - 1);
+                Piece R = Board.RemovePiece(originR);
+                R.IncrementMovementQuantity();
+                Board.SetPiece(R, destinyR);
+            }
+
             return capturedPiece;
         }
 
@@ -50,6 +71,26 @@ namespace chess
                 Captured.Remove(capturedPiece);
             }
             Board.SetPiece(p, origin);
+
+            //#undo especialplay small castling
+            if (p is King && destiny.Column == origin.Column + 2)
+            {
+                Position originR = new Position(origin.Line, origin.Column + 3);
+                Position destinyR = new Position(origin.Line, origin.Column + 1);
+                Piece R = Board.RemovePiece(destinyR);
+                R.DecrementMovementQuantity();
+                Board.SetPiece(R, originR);
+            }
+
+            //#undo especialplay big castling
+            if (p is King && destiny.Column == origin.Column - 2)
+            {
+                Position originR = new Position(origin.Line, origin.Column - 4);
+                Position destinyR = new Position(origin.Line, origin.Column - 1);
+                Piece R = Board.RemovePiece(destinyR);
+                R.IncrementMovementQuantity();
+                Board.SetPiece(R, originR);
+            }
         }
 
         public void makePlay(Position origin, Position destiny)

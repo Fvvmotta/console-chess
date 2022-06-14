@@ -144,6 +144,24 @@ namespace chess
                 throw new BoardException("You can't put yourself in check!");
             }
 
+            Piece p = Board.Piece(destiny);
+
+            //#specialplay promotion
+
+            if(p is Pawn)
+            {
+                if((p.Color == Color.White && destiny.Line == 0) || (p.Color == Color.Black && destiny.Line == 7))
+                {
+                    p = Board.RemovePiece(destiny);
+                    Pieces.Remove(p);
+                    Piece queen = new Queen(Board, p.Color);
+                    Board.SetPiece(queen, destiny);
+                    Pieces.Add(queen);
+                }
+            }
+
+
+
             if (IsInCheck(Adversary(CurrentPlayer)))
             {
                 Check = true;
@@ -161,8 +179,6 @@ namespace chess
                 Turn++;
                 ChangePlayer();
             }
-
-            Piece p = Board.Piece(destiny);
 
             //#specialplau EnPassant
             if(p is Pawn && (destiny.Line == origin.Line - 2 || destiny.Line == origin.Line + 2))

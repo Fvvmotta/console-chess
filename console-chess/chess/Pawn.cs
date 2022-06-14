@@ -55,6 +55,19 @@ namespace chess
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
+                // #jogadaespecial en passant white
+                if (Position.Line == 3)
+                {
+                    Position left = new Position(Position.Line, Position.Column - 1);
+                    if (Board.ValidPosition(left) && EnemyExists(left) && Board.Piece(left) == Match.VulnerableEnPassant)
+                    {
+                        mat[left.Line - 1, left.Column] = true;
+                    }
+                    Position direita = new Position(Position.Line, Position.Column + 1);
+                    if (Board.ValidPosition(direita) && EnemyExists(direita) && Board.Piece(direita) == Match.VulnerableEnPassant)    {
+                        mat[direita.Line - 1, direita.Column] = true;
+                    }
+                }
             }
             else
             {
@@ -78,6 +91,20 @@ namespace chess
                 if (Board.ValidPosition(pos) && EnemyExists(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
+                }
+                // #jogadaespecial en passant black
+                if (Position.Line == 4)
+                {
+                    Position left = new Position(Position.Line, Position.Column - 1);
+                    if (Board.ValidPosition(left) && EnemyExists(left) && Board.Piece(left) == Match.VulnerableEnPassant)
+                    {
+                        mat[left.Line + 1, left.Column] = true;
+                    }
+                    Position direita = new Position(Position.Line, Position.Column + 1);
+                    if (Board.ValidPosition(direita) && EnemyExists(direita) && Board.Piece(direita) == Match.VulnerableEnPassant)
+                    {
+                        mat[direita.Line + 1, direita.Column] = true;
+                    }
                 }
             }
             return mat;

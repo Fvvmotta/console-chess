@@ -14,6 +14,7 @@ namespace chess
         private HashSet<Piece> Pieces;
         private HashSet<Piece> Captured;
         public bool Check { get; private set; }
+        public Piece VulnerableEnPassant { get; private set; }
 
         public ChessMatch()
         {
@@ -22,6 +23,7 @@ namespace chess
             CurrentPlayer = Color.White;
             Terminated = false;
             Check = false;
+            VulnerableEnPassant = null;
             Pieces = new HashSet<Piece>();
             Captured = new HashSet<Piece>();
             InsertPieces();
@@ -58,6 +60,26 @@ namespace chess
                 Board.SetPiece(R, destinyR);
             }
 
+            //#especialplay EnPassant
+            if(p is Pawn)
+            {
+                if(origin.Column != destiny.Column && capturedPiece == null)
+                {
+                    Position posP;
+                    if (p.Color == Color.White)
+                    {
+                        posP = new Position(destiny.Line + 1, destiny.Column);
+                    }
+                    else
+                    {
+                        posP = new Position(destiny.Line - 1, destiny.Column);
+                    }
+                    capturedPiece = Board.RemovePiece(posP);
+                    Captured.Add(capturedPiece);
+                }
+            }
+
+
             return capturedPiece;
         }
 
@@ -91,6 +113,25 @@ namespace chess
                 R.IncrementMovementQuantity();
                 Board.SetPiece(R, originR);
             }
+
+            //#especialplay EnPassant
+            if (p is Pawn)
+            {
+                if (origin.Column != destiny.Column && capturedPiece == VulnerableEnPassant)
+                {
+                    Piece pawn = Board.RemovePiece(destiny);
+                    Position posP;
+                    if (p.Color == Color.White)
+                    {
+                        posP = new Position(3, destiny.Column);
+                    }
+                    else
+                    {
+                        posP = new Position(4, destiny.Column);
+                    }
+                    Board.SetPiece(pawn, posP);
+                }
+            }
         }
 
         public void makePlay(Position origin, Position destiny)
@@ -119,6 +160,18 @@ namespace chess
             {
                 Turn++;
                 ChangePlayer();
+            }
+
+            Piece p = Board.Piece(destiny);
+
+            //#specialplau EnPassant
+            if(p is Pawn && (destiny.Line == origin.Line - 2 || destiny.Line == origin.Line + 2))
+            {
+                VulnerableEnPassant = p;
+            }
+            else
+            {
+                VulnerableEnPassant = null;
             }
         }
 

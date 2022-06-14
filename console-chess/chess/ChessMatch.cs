@@ -99,7 +99,7 @@ namespace chess
 
         public void ValidateDestinyPosition(Position origin, Position destiny)
         {
-            if (!Board.Piece(origin).CanMoveTo(destiny))
+            if (!Board.Piece(origin).PossibleMovement(destiny))
             {
                 throw new BoardException("Invalid destiny position!");
             }

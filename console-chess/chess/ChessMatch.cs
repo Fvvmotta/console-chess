@@ -70,12 +70,16 @@ namespace chess
             {
                 Check = false;
             }
-
-            Turn++;
-            ChangePlayer();
+            if (TestCheckMate(Adversary(CurrentPlayer)))
+            {
+                Terminated = true;
+            }
+            else
+            {
+                Turn++;
+                ChangePlayer();
+            }
         }
-
-
 
         public void ValideOriginPosition(Position pos)
         {
@@ -176,6 +180,38 @@ namespace chess
             }
             return false;
         }
+
+        public bool TestCheckMate(Color color)
+        {
+            if (!IsInCheck(color))
+            {
+                return false;
+            }
+            foreach(Piece x in PiecesInGame(color))
+            {
+                bool[,] mat = x.PossibleMovements();
+                for (int i = 0; i < Board.Lines; i++)
+                {
+                    for (int j = 0; j < Board.Columns; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position origin = x.Position;
+                            Position destiny = new Position(i, j);
+                            Piece capturedPiece = ExecuteMovement(origin, destiny);
+                            bool checkTest = IsInCheck(color);
+                            UndoMovement(origin, destiny, capturedPiece);
+                            if (!checkTest)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         public void InsertNewPiece(char column, int line, Piece piece)
         {
             Board.SetPiece(piece, new ChessPosition(column, line).ToPosition());
@@ -184,18 +220,12 @@ namespace chess
         private void InsertPieces()
         {
             InsertNewPiece('c', 1, new Tower(Board, Color.White));
-            InsertNewPiece('c', 2, new Tower(Board, Color.White));
-            InsertNewPiece('d', 2, new Tower(Board, Color.White));
-            InsertNewPiece('e', 2, new Tower(Board, Color.White));
-            InsertNewPiece('e', 1, new Tower(Board, Color.White));
             InsertNewPiece('d', 1, new King(Board, Color.White));
+            InsertNewPiece('h', 7, new Tower(Board, Color.White));
 
-            InsertNewPiece('c', 7, new Tower(Board, Color.Black));
-            InsertNewPiece('c', 8, new Tower(Board, Color.Black));
-            InsertNewPiece('d', 7, new Tower(Board, Color.Black));
-            InsertNewPiece('e', 7, new Tower(Board, Color.Black));
-            InsertNewPiece('e', 8, new Tower(Board, Color.Black));
-            InsertNewPiece('d', 8, new King(Board, Color.Black));
+            InsertNewPiece('a', 8, new King(Board, Color.Black));
+            InsertNewPiece('b', 8, new Tower(Board, Color.Black));
+            
         }
     }
 }

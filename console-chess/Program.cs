@@ -39,7 +39,8 @@ namespace console_chess
                         Console.WriteLine(e.Message);
                         Console.ReadLine();
                     }
-                    
+                    Console.Clear();
+                    Screen.PrintMatch(match);
                 }
                // Screen.PrintBoard(match.Board); 
             }catch (BoardException e)

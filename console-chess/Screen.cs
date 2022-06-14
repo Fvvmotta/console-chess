@@ -14,12 +14,21 @@ namespace console_chess
             PrintCapturedPieces(match);
             Console.WriteLine();
             Console.WriteLine("Turn: " + match.Turn);
-            Console.WriteLine("Waiting Player: " + match.CurrentPlayer);
-            Console.WriteLine();
-            if (match.Check)
+            if (!match.Terminated)
             {
-                Console.WriteLine("CHECK!");
+                Console.WriteLine("Waiting Player: " + match.CurrentPlayer);
+                Console.WriteLine();
+                if (match.Check)
+                {
+                    Console.WriteLine("CHECK!");
+                }
             }
+            else
+            {
+                Console.WriteLine("CHECKMATE!");
+                Console.WriteLine("Winner: " + match.CurrentPlayer);
+            }
+            
         }
         public static void PrintCapturedPieces(ChessMatch match)
         {
